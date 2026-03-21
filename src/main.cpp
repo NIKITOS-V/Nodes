@@ -1,11 +1,11 @@
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
+#include "Platform.hpp"
 #include <GLFW/glfw3.h>
 #include <imnodes/imnodes.h>
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
-
 #include "NeFrame/WindowNE.hpp"
 #include "NeFrame/NEFrame.hpp"
 #include "NEFrame/NodesEditor/ControlPanel/ControlPanel.hpp"
@@ -31,125 +31,40 @@ void fillFonts(ImGuiIO* io);
 
 int main(void)
 {
-    // константы
-    
-    std::string shaderPath = "shaderTXT.txt";
-
-    // конец
-
-    GLFWwindow* nodesEditorWindow;
-
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-
-    nodesEditorWindow = glfwCreateWindow(WindowNE::width, WindowNE::height, "Nodes editor", NULL, NULL);
-    if (!nodesEditorWindow)
-    {
-        glfwTerminate();
-        return -1;
-    }
-
-    glfwMakeContextCurrent(nodesEditorWindow);
-    glfwSwapInterval(1);
-
-    // Иниициализация imgui, imnodes, редактора нодов
-    IMGUI_CHECKVERSION();
-
-    ImGui::CreateContext();
-    ImNodes::CreateContext();
-
-    ImGuiIO& io = ImGui::GetIO(); 
-    (void)io;
-
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-
-    fillFonts(&io); // заполнение шрифтов
-
-    ImGui::StyleColorsDark();
-
-    ImGui_ImplGlfw_InitForOpenGL(nodesEditorWindow, true);
-    ImGui_ImplOpenGL3_Init();
-    // конец
-
-    // инициалищация классов бэкэнда
-
+    Platform plt(800, 600, "12");
+    const std::string shaderPath = "shaderTXT.txt";
     FileHandler* fileHangler = new FileHandler();
-
-    // конец 
-
-    // инициализация классов фронтэнда
     NodesDB* nodesDB = new NodesDB();
-
     Linker* linker = new Linker(nodesDB);
 
     ControlPanel* controlPanel = new ControlPanel(
         ImVec2(250, 120),
-        nodesDB, 
+        nodesDB,
         linker
     );
-    
+
     fillControlPanel(
         controlPanel,
         fileHangler,
         shaderPath
-    ); // заполнение контрольной панели builder'ами нодов
+    ); // Р·Р°РїРѕР»РЅРµРЅРёРµ РєРѕРЅС‚СЂРѕР»СЊРЅРѕР№ РїР°РЅРµР»Рё builder'Р°РјРё РЅРѕРґРѕРІ
 
     NodesEditor* nodesEditor = new NodesEditor(nodesDB, linker, controlPanel);
-
     NEFrame* neFrame = new NEFrame(nodesEditor);
-    // конец
 
-    while (!glfwWindowShouldClose(nodesEditorWindow))
-    {
-        glfwPollEvents();
+    plt.onUpdate([neFrame](int width, int height) {
+        neFrame->draw(width, height);
+    });
 
-        ImGui_ImplGlfw_Sleep(10);
-
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
-        neFrame->draw(
-            WindowNE::width,
-            WindowNE::height
-        );
-
-        ImGui::Render();
-
-        glfwGetFramebufferSize(nodesEditorWindow, &WindowNE::width, &WindowNE::height);
-        glViewport(0, 0, WindowNE::width, WindowNE::height);
-        glClearColor(
-            WindowNE::bgColor.x * WindowNE::bgColor.w, 
-            WindowNE::bgColor.y * WindowNE::bgColor.w, 
-            WindowNE::bgColor.z * WindowNE::bgColor.w, 
-            WindowNE::bgColor.w
-        );
-
-        glClear(GL_COLOR_BUFFER_BIT);
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        glfwSwapBuffers(nodesEditorWindow);
+    while (!plt.shouldClose()) {
+        plt.render();
     }
-
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-
-    ImNodes::DestroyContext();
-    ImGui::DestroyContext();
-
-    glfwDestroyWindow(nodesEditorWindow);
-    glfwTerminate();
     
     delete nodesDB;
     delete linker;
     delete controlPanel;
     delete nodesEditor;
     delete neFrame;
-
     delete fileHangler;
 
     return 0;
@@ -198,7 +113,7 @@ void fillControlPanel(
 
 void fillFonts(ImGuiIO* io)
 {
-    Font::arial_18 = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 18); // Стандартный шрифт
+    Font::arial_18 = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 18); // РЎС‚Р°РЅРґР°СЂС‚РЅС‹Р№ С€СЂРёС„С‚
 
     Font::arial_16 = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 16);
     Font::arial_20 = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 20);

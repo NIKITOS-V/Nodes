@@ -28,6 +28,7 @@
     <ClCompile Include="include\imgui\imgui_tables.cpp" />
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="include\imnodes\imnodes.cpp" />
+    <ClCompile Include="include\Platform.cpp" />
     <ClCompile Include="src\FileHandler.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\NEFrame\Formating\Fonts.cpp" />
@@ -81,6 +82,7 @@
     <ClInclude Include="src\NEFrame\NodesEditor\Nodes\Node\Node.hpp" />
     <ClInclude Include="src\NEFrame\NodesEditor\Nodes\Node\NodeBuilder.hpp" />
     <ClInclude Include="src\NEFrame\WindowNE.hpp" />
+    <ClInclude Include="src\Platform.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

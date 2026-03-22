@@ -3,6 +3,7 @@
 
 #include <functional>
 #include "NEFrame/Formating/MouseButtons.hpp"
+#include "NEFrame/NodesDB/NodesDB.hpp"
 
 typedef struct Linker Linker;
 typedef struct NodesDB NodesDB;

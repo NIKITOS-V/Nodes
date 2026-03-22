@@ -27,13 +27,13 @@ void fillControlPanel(
     std::string shaderPath
 );
 
-void fillFonts(ImGuiIO* io);
-
 int main(void)
 {
     Platform plt(800, 600, "12");
+
     const std::string shaderPath = "shaderTXT.txt";
     FileHandler* fileHangler = new FileHandler();
+
     NodesDB* nodesDB = new NodesDB();
     Linker* linker = new Linker(nodesDB);
 
@@ -73,8 +73,8 @@ int main(void)
 void fillControlPanel(
     ControlPanel* controlPanel, 
     FileHandler* fileHandler,
-    std::string shaderPath
-){
+    std::string shaderPath)
+{
     controlPanel->addNodeBuilder(
         NodeBuilder(
             []() {return std::make_shared<IntStorage>();  },
@@ -109,20 +109,4 @@ void fillControlPanel(
             FPSNode::CLASS_NAME
         )
     );
-}
-
-void fillFonts(ImGuiIO* io)
-{
-    Font::arial_18 = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 18); // Стандартный шрифт
-
-    Font::arial_16 = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 16);
-    Font::arial_20 = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 20);
-    Font::arial_22 = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 22);
-    Font::arial_24 = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 24);
-
-    Font::calibri_16 = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 16);
-    Font::calibri_18 = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 18);
-    Font::calibri_20 = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 20);
-    Font::calibri_22 = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 22);
-    Font::calibri_24 = io->Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 24);
 }

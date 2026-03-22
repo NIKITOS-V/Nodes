@@ -1,5 +1,18 @@
 #include "NodesEditor.hpp"
 
+// Добавленные заголовки для полных определений
+#include "NEFrame/NodesEditor/Nodes/Node/Node.hpp"
+#include "NEFrame/Formating/LinkInfo.hpp"
+#include <imnodes/imnodes.h>  // если это отдельная библиотека
+
+#include <imgui/imgui.h>
+#include "NEFrame/Linker/Linker.hpp"
+#include "ControlPanel/ControlPanel.hpp"
+#include "NEFrame/NodesDB/NodesDB.hpp"
+#include <Windows.h>
+
+// ... остальной код без изменений
+
 NodesEditor::NodesEditor(
     NodesDB* nodesDB,
     Linker* linker,
@@ -9,10 +22,14 @@ NodesEditor::NodesEditor(
     this->linker = linker;
     this->controlPanel = controlPanel;
     
-    this->padding = ImVec2(10, 10);
+    this->padding = (ImVec2*)malloc(sizeof(ImVec2));
+    *this->padding = ImVec2(10, 10);
 
-    this->fieldPos = new Vec2(0.0f, 0.0f);
-    this->lastMausePos = std::make_shared<Vec2<float>>(0.0f, 0.0f);
+    this->fieldPos = (ImVec2*)malloc(sizeof(ImVec2));
+    *this->fieldPos = ImVec2(0, 0);
+
+    this->lastMausePos = (ImVec2*)malloc(sizeof(ImVec2));
+    *this->lastMausePos = ImVec2(0, 0);
 
     this->miniMapSizeHint = 0.15f;
 
@@ -35,15 +52,15 @@ NodesEditor::NodesEditor(
 }
 
 NodesEditor::~NodesEditor() {
-    delete this->fieldPos;
+    
 }
 
-void NodesEditor::draw(ImVec2 pos, ImVec2 size)
+void NodesEditor::draw(ImVec2* pos, ImVec2* size)
 {
     pushStyles();
 
-    ImGui::SetNextWindowSize(size);
-    ImGui::SetNextWindowPos(pos);
+    ImGui::SetNextWindowSize(*size);
+    ImGui::SetNextWindowPos(*pos);
     ImGui::Begin(
         "nodes", 
         0, 
@@ -55,16 +72,16 @@ void NodesEditor::draw(ImVec2 pos, ImVec2 size)
 
     ImNodes::EditorContextResetPanning(
         ImVec2(
-            this->fieldPos->getX(), 
-            this->fieldPos->getY()
+            this->fieldPos->x,
+            this->fieldPos->y
         )
     );
 
 
     ImNodes::BeginNodeEditor();
 
-    this->nodesDB->doOverNodes(&this->drawNodes);
-    this->nodesDB->doOverLinks(&this->drawLinks);
+    this->nodesDB->doOverNodes(this->drawNodes);
+    this->nodesDB->doOverLinks(this->drawLinks);
 
     checkMouseEvents();
 
@@ -118,7 +135,7 @@ void NodesEditor::pushStyles()
     { // Настройки / цвет поля с нодами
         ImGui::PushStyleVar(
             ImGuiStyleVar_WindowPadding,
-            this->padding
+            *this->padding
         );
 
         ImNodes::PushColorStyle(
@@ -142,18 +159,10 @@ void NodesEditor::popStyles()
     }
 }
 
-void NodesEditor::drawCreationWindow(ImVec2 editorPos, ImVec2 editorSize)
+void NodesEditor::drawCreationWindow(ImVec2* editorPos, ImVec2* editorSize)
 {
-    this->controlPanel->draw(
-        getCorrectCoord(
-            ImVec2(
-                this->lastMausePos->getX(),
-                this->lastMausePos->getY()
-            ),
-            editorPos,
-            editorSize
-        )
-    );
+    ImVec2 winPos = ImVec2(this->lastMausePos->x, this->lastMausePos->y);
+    this->controlPanel->draw(*getCorrectCoord(&winPos, editorPos, editorSize));
 }
 
 void NodesEditor::checkMouseEvents()
@@ -172,7 +181,7 @@ void NodesEditor::checkMouseEvents()
             this->controlPanel->deactivate();
         }
 
-        else if (ImGui::IsMouseClicked(this->controlPanelButtonNumber)) // Проверка на нажатие ближней боковой кнопки мыши
+        else if ((GetAsyncKeyState(VK_SHIFT) & 0x8000) && (GetAsyncKeyState('A') & 0x8000)) // Проверка на нажатие shift+A
         {
             updateLastMausePos();
             this->controlPanel->activate();
@@ -184,41 +193,39 @@ void NodesEditor::moveField()
 {
     ImVec2 mousePos = ImGui::GetMousePos();
 
-    this->fieldPos->setX(fieldPos->getX() + mousePos.x - lastMausePos->getX());
-    this->fieldPos->setY(fieldPos->getY() + mousePos.y - lastMausePos->getY());
+    this->fieldPos->x = (fieldPos->x + mousePos.x - lastMausePos->x);
+    this->fieldPos->y = (fieldPos->y + mousePos.y - lastMausePos->y);
 
-    lastMausePos->setX(mousePos.x);
-    lastMausePos->setY(mousePos.y);
+    lastMausePos->x = (mousePos.x);
+    lastMausePos->y = (mousePos.y);
 }
 
 void NodesEditor::updateLastMausePos()
 {
     ImVec2 mousePos = ImGui::GetMousePos();
 
-    lastMausePos->setX(mousePos.x);
-    lastMausePos->setY(mousePos.y);
+    lastMausePos->x = mousePos.x;
+    lastMausePos->y = mousePos.y;
 }
 
-ImVec2 NodesEditor::getCorrectCoord(ImVec2 winPos, ImVec2 editorPos, ImVec2 editorSize)
+ImVec2* NodesEditor::getCorrectCoord(ImVec2* winPos, ImVec2* editorPos, ImVec2* editorSize)
 {
-    ImVec2 correctPos = ImVec2(
-        winPos.x,
-        winPos.y
-    );
+    ImVec2* correctPos = (ImVec2*)malloc(sizeof(ImVec2));
+    *correctPos = ImVec2(winPos->x, winPos->y);
 
     ImVec2 winSize = this->controlPanel->getSize();
 
-    float rigthX = editorPos.x + editorSize.x;
-    float rigthY = editorPos.y + editorSize.y;
+    float rigthX = editorPos->x + editorSize->x;
+    float rigthY = editorPos->y + editorSize->y;
 
-    if (winPos.x + winSize.x - this->padding.x > rigthX)
+    if (winPos->x + winSize.x - this->padding->x > rigthX)
     {
-        correctPos.x = rigthX - winSize.x - this->padding.x;
+        correctPos->x = rigthX - winSize.x - this->padding->x;
     }
 
-    if (winPos.y + winSize.y - this->padding.y > rigthY)
+    if (winPos->y + winSize.y - this->padding->y > rigthY)
     {
-        correctPos.y = editorPos.y + editorSize.y - winSize.y - this->padding.y;
+        correctPos->y = editorPos->y + editorSize->y - winSize.y - this->padding->y;
     }
 
     return correctPos;

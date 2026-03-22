@@ -1,15 +1,16 @@
 #ifndef _NODESEDITOR_HPP_
 #define _NODESEDITOR_HPP_
 
-#include <Windows.h>
-#include <imnodes/imnodes.h>
-#include <imgui/imgui.h>
 #include <functional>
 
-#include "NEFrame/Formating/MouseButtons.hpp"
-#include "NEFrame/Linker/Linker.hpp"
-#include "ControlPanel/ControlPanel.hpp"
-#include "NEFrame/NodesDB/NodesDB.hpp"
+class ControlPanel;
+class NodesDB;
+class Linker;
+class Node;
+class LinkInfo;
+struct ImVec2;
+
+enum MouseButton;
 
 class NodesEditor {
 private:
@@ -31,8 +32,8 @@ private:
 
 public:
 	NodesEditor(
-		NodesDB* nodesDB, 
-		Linker* linker, 
+		NodesDB* nodesDB,
+		Linker* linker,
 		ControlPanel* controlPanel
 	);
 	~NodesEditor();

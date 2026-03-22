@@ -18,15 +18,39 @@ NodesEditor::NodesEditor(
     this->linker = linker;
     this->controlPanel = controlPanel;
 
-    this->padding = (ImVec2*)malloc(sizeof(ImVec2));
-    *this->padding = ImVec2(10, 10);
 
-    this->fieldPos = (ImVec2*)malloc(sizeof(ImVec2));
-    *this->fieldPos = ImVec2(0, 0);
+    this->padding = new ImVec2(10, 10);
+    this->fieldPos = new ImVec2(0, 0);
+    this->lastMausePos = new ImVec2(0, 0);
+    this->miniMapSizeHint = 0.15f;
 
-    this->lastMausePos = (ImVec2*)malloc(sizeof(ImVec2));
-    *this->lastMausePos = ImVec2(0, 0);
+    this->moveFieldButtonNumber = MouseButton::RIGHT;
+    this->controlPanelButtonNumber = MouseButton::NEAR_SIDE;
 
+    this->drawNodes = [](Node* node)
+        {
+            node->draw();
+        };
+
+    this->drawLinks = [](LinkInfo* linkInfo)
+        {
+            ImNodes::Link(
+                linkInfo->getLinkID(),
+                linkInfo->getOutPointID(),
+                linkInfo->getInPointID()
+            );
+        };
+}
+
+NodesEditor::NodesEditor(const NODES_EDITOR_PARAMS& params) {
+    this->nodesDB = params.pNodesDB;
+    this->linker = params.pLinker;
+    this->controlPanel = params.pControlPanel;
+
+
+    this->padding = new ImVec2(10, 10);
+    this->fieldPos = new ImVec2(0, 0);
+    this->lastMausePos = new ImVec2(0, 0);
     this->miniMapSizeHint = 0.15f;
 
     this->moveFieldButtonNumber = MouseButton::RIGHT;
@@ -48,7 +72,9 @@ NodesEditor::NodesEditor(
 }
 
 NodesEditor::~NodesEditor() {
-
+    delete this->fieldPos;
+    delete this->lastMausePos;
+    delete this->padding;
 }
 
 void NodesEditor::draw(ImVec2* pos, ImVec2* size)

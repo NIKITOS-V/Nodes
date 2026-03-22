@@ -2,15 +2,22 @@
 #define _NODESEDITOR_HPP_
 
 #include <functional>
+#include "NEFrame/Formating/MouseButtons.hpp"
+#include "NEFrame/NodesDB/NodesDB.hpp"
 
-class ControlPanel;
-class NodesDB;
 class Linker;
+class NodesDB;
+class ControlPanel;
+class ImVec2;
 class Node;
 class LinkInfo;
-struct ImVec2;
 
-enum MouseButton;
+struct NODES_EDITOR_PARAMS {
+	ControlPanel* pControlPanel;
+	NodesDB* pNodesDB;
+	Linker* pLinker;
+};
+
 
 class NodesEditor {
 private:
@@ -32,10 +39,11 @@ private:
 
 public:
 	NodesEditor(
-		NodesDB* nodesDB,
-		Linker* linker,
+		NodesDB* nodesDB, 
+		Linker* linker, 
 		ControlPanel* controlPanel
 	);
+	NodesEditor(const NODES_EDITOR_PARAMS& params);
 	~NodesEditor();
 
 	void draw(

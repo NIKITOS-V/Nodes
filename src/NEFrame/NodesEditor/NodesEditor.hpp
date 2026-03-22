@@ -8,7 +8,7 @@ class NodesDB;
 class Linker;
 class Node;
 class LinkInfo;
-struct ImVec2;
+class ImVec2;
 
 enum MouseButton;
 

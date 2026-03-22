@@ -22,9 +22,6 @@ typedef std::unordered_map<uint, l2ilist> grh;
 typedef std::unordered_map<uint, nlist::iterator> nmap;
 typedef std::unordered_map<uint, lilist::iterator> limap;
 
-typedef std::function<void(Node*)> onf;
-typedef std::function<void(LinkInfo*)> olif;
-
 typedef std::list<std::pair<nodeptr, uint>> nplist;
 typedef std::pair<nodeptr, nodeptr> nodepair;
 

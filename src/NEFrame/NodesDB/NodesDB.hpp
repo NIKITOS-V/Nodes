@@ -40,8 +40,8 @@ private:
 	limap linkInfoMap;
 
 public:
-	void doOverNodes(onf* func);
-	void doOverLinks(olif* func);
+	void doOverNodes(onf& func);
+	void doOverLinks(olif& func);
 
 	nodeptr getNode(uint nodeID);
 	liptr getLinkInfo(uint linkID);

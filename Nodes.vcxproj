@@ -28,7 +28,6 @@
     <ClCompile Include="include\imgui\imgui_tables.cpp" />
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="include\imnodes\imnodes.cpp" />
-    <ClCompile Include="include\Platform.cpp" />
     <ClCompile Include="src\FileHandler.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\NEFrame\Formating\Fonts.cpp" />
@@ -47,6 +46,7 @@
     <ClCompile Include="src\NEFrame\NodesEditor\Nodes\Node\Node.cpp" />
     <ClCompile Include="src\NEFrame\NodesEditor\Nodes\Node\NodeBuilder.cpp" />
     <ClCompile Include="src\NEFrame\WindowNE.cpp" />
+    <ClCompile Include="src\Platform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\imgui\imconfig.h" />
@@ -61,6 +61,7 @@
     <ClInclude Include="include\imgui\imstb_truetype.h" />
     <ClInclude Include="include\imnodes\imnodes.h" />
     <ClInclude Include="include\imnodes\imnodes_internal.h" />
+    <ClInclude Include="include\Platform.hpp" />
     <ClInclude Include="src\FileHandler.hpp" />
     <ClInclude Include="src\NEFrame\Formating\Fonts.hpp" />
     <ClInclude Include="src\NEFrame\Formating\InPointData.hpp" />
@@ -82,7 +83,6 @@
     <ClInclude Include="src\NEFrame\NodesEditor\Nodes\Node\Node.hpp" />
     <ClInclude Include="src\NEFrame\NodesEditor\Nodes\Node\NodeBuilder.hpp" />
     <ClInclude Include="src\NEFrame\WindowNE.hpp" />
-    <ClInclude Include="src\Platform.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -108,13 +108,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -170,10 +170,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\xinitrix\source\repos\Nodes\src;C:\Users\xinitrix\source\repos\Nodes\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glfw3_mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)include\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -184,7 +188,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\;$(SolutionDir)src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>

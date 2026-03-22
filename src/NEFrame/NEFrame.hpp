@@ -1,14 +1,7 @@
 #ifndef _NERAME_HPP_
 #define _NERAME_HPP_
 
-#include <imnodes/imnodes.h>
-#include <iostream>
-
-#include "WindowNE.hpp"
-#include "Formating\Vec2.hpp"
-
-#include "NodesEditor/NodesEditor.hpp"
-
+typedef struct NodesEditor NodesEditor;
 
 class NEFrame {
 private:
@@ -16,7 +9,6 @@ private:
 
 public:
     NEFrame(NodesEditor* nodesEditor);
-
     void draw(int width, int height);
 };
 

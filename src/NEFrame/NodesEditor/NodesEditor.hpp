@@ -1,15 +1,15 @@
 #ifndef _NODESEDITOR_HPP_
 #define _NODESEDITOR_HPP_
 
-#include <imnodes/imnodes.h>
-#include <memory>
 #include <functional>
-
-#include "NEFrame/Formating/Vec2.hpp"
-#include "ControlPanel/ControlPanel.hpp"
-#include "NEFrame/NodesDB/NodesDB.hpp"
-#include "NEFrame/Linker/Linker.hpp"
 #include "NEFrame/Formating/MouseButtons.hpp"
+
+typedef struct Linker Linker;
+typedef struct NodesDB NodesDB;
+typedef struct ControlPanel ControlPanel;
+typedef struct ImVec2 ImVec2;
+typedef struct Node Node;
+typedef struct LinkInfo LinkInfo;
 
 
 class NodesEditor {
@@ -18,10 +18,9 @@ private:
 	NodesDB* nodesDB;
 	Linker* linker;
 
-	Vec2<float>* fieldPos;
-	std::shared_ptr<Vec2<float>> lastMausePos;
-
-	ImVec2 padding;
+	ImVec2* fieldPos;
+	ImVec2* lastMausePos;
+	ImVec2* padding;
 
 	float miniMapSizeHint;
 
@@ -40,8 +39,8 @@ public:
 	~NodesEditor();
 
 	void draw(
-		ImVec2 pos, 
-		ImVec2 size
+		ImVec2* pos,
+		ImVec2* size
 	);
 
 	void setMoveFieldButton(MouseButton mouseButton);
@@ -52,20 +51,18 @@ private:
 	void popStyles();
 
 	void drawCreationWindow(
-		ImVec2 editorPos, 
-		ImVec2 editorSize
+		ImVec2* editorPos,
+		ImVec2* editorSize
 	);
 
 	void checkMouseEvents();
-
 	void moveField();
-
 	void updateLastMausePos();
 
-	ImVec2 getCorrectCoord(
-		ImVec2 winPos, 
-		ImVec2 editorPos, 
-		ImVec2 editorSize
+	ImVec2* getCorrectCoord(
+		ImVec2* winPos,
+		ImVec2* editorPos,
+		ImVec2* editorSize
 	);
 };
 

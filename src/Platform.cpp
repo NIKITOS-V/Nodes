@@ -1,9 +1,10 @@
 #include "Platform.hpp"
-#include <GLFW/glfw3.h>
-#include <imnodes/imnodes.h>
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_glfw.h>
-#include <imgui/imgui_impl_opengl3.h>
+#include "GLFW/glfw3.h"
+#include "imgui/imgui.h"
+#include "imnodes/imnodes.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
+#include "NEFrame/Formating/Fonts.hpp"
 
 Platform::Platform(int width, int height, const char* title) {
     glfwInit();
@@ -34,7 +35,20 @@ Platform::Platform(int width, int height, const char* title) {
     (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+
     //fillFonts(&io); // заполнение шрифтов
+    Font::arial_18 = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 18); // Стандартный шрифт
+
+    Font::arial_16 = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 16);
+    Font::arial_20 = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 20);
+    Font::arial_22 = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 22);
+    Font::arial_24 = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 24);
+
+    Font::calibri_16 = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 16);
+    Font::calibri_18 = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 18);
+    Font::calibri_20 = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 20);
+    Font::calibri_22 = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 22);
+    Font::calibri_24 = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 24);
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(nodesEditorWindow, true);
     ImGui_ImplOpenGL3_Init();
@@ -101,7 +115,6 @@ void Platform::render() {
 }
 
 
-char Platform::shouldClose()
-{
+char Platform::shouldClose() {
     return this->m_shouldClose;
 }

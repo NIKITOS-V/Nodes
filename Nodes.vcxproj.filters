@@ -96,7 +96,7 @@
     <ClCompile Include="include\imnodes\imnodes.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="include\Platform.cpp">
+    <ClCompile Include="src\Platform.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -200,7 +200,7 @@
     <ClInclude Include="include\imnodes\imnodes_internal.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform.hpp">
+    <ClInclude Include="include\Platform.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
